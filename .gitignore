@@ -1,0 +1,6 @@
+# 코드 내용
+venv
+*.pyc
+.env
+.DS_Store
+/venv/
