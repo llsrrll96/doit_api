@@ -21,4 +21,4 @@ class Todo(Resource):
 
 class HelloWorld(Resource):
     def get(self):
-        return {'hello':'world'}
+        return {'hello':'world_v2'}
