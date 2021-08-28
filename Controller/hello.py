@@ -1,7 +1,9 @@
 from flask_restful import Resource
 from flask_restful import fields, marshal_with
 from flask import Flask, jsonify, request
+import pandas as pd
 
+from Domain.product_format import Product
 from Service.search_service import Search
 
 resource_fields = {
@@ -26,10 +28,10 @@ class Todo(Resource):
 #parser.add_argument('username', type=unicode, location='json')
 #parser.add_argument('password', type=unicode, location='json')
 # https://stackoverflow.com/questions/25098661/flask-restful-add-resource-parameters
-class Test(Resource):
-    def __init__(self,**kwargs): # *args : 변수 갯수 상관 없음, **kwargs : {'키워드':'특정값'} 형태
-        self.search = kwargs['search']
 
+class Test(Resource):
+    def __init__(self):
+        self.product = Product()
     def post(self):
         json_data = request.get_json(force=True)
         names = json_data['names']
@@ -39,8 +41,18 @@ class Test(Resource):
         print(jsonify(nm=names))
         return jsonify(nm=names)
 
+    # test
     def get(self,name):
-        return self.search.search_name_hscode(name)
+        # HSCODE, NM_EN, NM_KO 3개 변수 Product 의 리스트를 Json 으로 반환
+        list_dim2 = [['0123456789', 'korean', '한국어'],
+                     ['0123456780', 'korea', '코레아'],
+                     ['1000100010', 'holy moly', '홀리몰리 과타몰리'],
+                     ['1234567890', 'smart phone', '스마트폰']]
+        columns = ["HSCODE", "NM_EN", "NM_KO"]
+
+        js = self.product.to_product_list_json(list_dim2,columns)
+
+        return js
 
 
 class HelloWorld(Resource):

@@ -7,13 +7,15 @@ class Find_Controller(Resource):
         self.search = kwargs['search']
 
     def post(self):
+        print('find controller post: ', request.get_data())
         json_data = request.get_json(force=True)
-        names = json_data['names']
+        names = json_data['productName']
+        print('검색어 : ',names) # 봉인 공기
 
-        # 리스트를 이용하여 찾는 메소드
+        # 문자열을 이용하여 찾는 메소드
+        return self.search.search_name_hscode(names)
 
-        print(jsonify(nm=names))
-        return jsonify(nm=names)
+    def get(self):
 
-    def get(self,name):
-        return self.search.search_name_hscode(name)
+
+        return []
