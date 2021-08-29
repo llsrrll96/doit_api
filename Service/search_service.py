@@ -46,8 +46,9 @@ class Search:
 
         # 1순위: 전체 문자열 검색 뽑힌 것
         # 2순위: 한 단어에 대한 갯수에 일치 합으로 기준을 정함
-        priority = name
-        priority_df = df_v.loc[df_v['NM_EN'].str.contains(priority, na=False)]
+        if len(name.split()) > 1:
+            priority = name
+            priority_df = df_v.loc[df_v['NM_EN'].str.contains(priority, na=False)]
 
         # 단어들을 토큰화
         for tokend_name in name.split():
@@ -86,7 +87,10 @@ class Search:
 
             # dataframe 으로 뽑아내기
             result_df = pd.DataFrame(columns=['HS6','HSCODE', 'NM_EN', 'NM_KO'])  # 새 dataframe
-            result_df = result_df.append(priority_df) # 완전 일치가 1순위
+
+            if len(name.split()) > 1:
+                result_df = result_df.append(priority_df) # 완전 일치가 1순위
+
             for hscode6 in top10_list:
                 result_df = result_df.append(total_df.loc[total_df.HS6 == hscode6])
 
