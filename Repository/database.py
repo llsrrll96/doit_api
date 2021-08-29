@@ -15,7 +15,7 @@ class DB:
         print('category 파일 불러오는 중')
         df = pd.read_csv('Repository/hsk_category.csv',encoding='utf-8-sig')
         df['HS CODE 10'] = df['HS CODE 10'].astype('str')
-        return df.set_index('HS CODE 10')
+        return df
 
     def get_hscode_en_ko(self):
         df= pd.read_csv('Repository/all_Combine.csv',encoding='utf-8-sig')

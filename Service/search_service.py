@@ -30,10 +30,15 @@ class Search:
         new_df = new_df[['HS6', 'HSCODE', 'NM_EN', 'NM_KO']]
         return new_df
 
+    # 자동완성을 위해 한글 거래명 출력
     def search_NM_KO_list(self): # -> js
+        print('search_NO_KO_list')
+        # 중복제거
         new_df = self.df.drop_duplicates(['NM_KO'])
-        print("nm ko list:",new_df.NM_KO.tolist())
-        return jsonify(nm_ko_list=new_df.NM_KO.tolist())
+        new_df['NM_KO'] = new_df['NM_KO'].str.replace(r'[^ㄱ-ㅣ가-힣]+', ' ')
+        NM_KO_list = new_df[new_df.NM_KO.str.len() <= 8][new_df.NM_KO.str.len() != 1].NM_KO.tolist()
+        print("nm_ko_list", NM_KO_list)
+        return jsonify(nm_ko_list=NM_KO_list)
 
 
     # df 사본으로 복사하여 사용하기
@@ -82,8 +87,6 @@ class Search:
             # 상위 10개만 뽑기
             top10_list= list(OrderedDict.fromkeys(total_df.HS6.tolist()))[0:10]
             print(top10_list)
-            # 중복 제거, 이미 제거
-            # result_df = result_df.drop_duplicates(['HSCODE'])
 
             # dataframe 으로 뽑아내기
             result_df = pd.DataFrame(columns=['HS6','HSCODE', 'NM_EN', 'NM_KO'])  # 새 dataframe
@@ -93,6 +96,9 @@ class Search:
 
             for hscode6 in top10_list:
                 result_df = result_df.append(total_df.loc[total_df.HS6 == hscode6])
+
+            # 우선순위와 합치면서 섞인다. 중복 제거, 이미 제거
+            result_df = result_df.drop_duplicates(['NM_EN'])
 
             result_df.NM_KO.fillna("-", inplace=True)
             return product.from_dataframe_to_js(result_df)
@@ -122,7 +128,18 @@ class Category:
         print('category 데이터 받음')
 
     def search_category(self,hsk_list):             #  hsk_list=  ["101299000","4814901090"]
-        result_df = self.cate_df.loc[hsk_list]
+        print('hsk_list:',hsk_list)
+        #result_df = self.cate_df.loc[hsk_list]      # hscode 리스트에서 카테고리에 없는 번호가 나왔을때 에러 발생
+        result_df = pd.DataFrame(columns=['HSCODE10', '세번10단위품명', '신성질별 분류명'])  # 새 dataframe
+
+        for code in hsk_list:
+            new_df = self.cate_df[self.cate_df['HS CODE 10'] == code]
+            try:
+                result_df = result_df.append(new_df)
+            except KeyError:
+                print('error:', code)  # 추후에 파일 쓰기로 기록하면 좋을 듯
+
+        result_df = result_df.set_index('HS CODE 10')
         hscodes = result_df.index.tolist()
         unit_names = result_df.세번10단위품명.tolist()
         divinity_names = result_df['신성질별 분류명'].tolist()
