@@ -30,6 +30,12 @@ class Search:
         new_df = new_df[['HS6', 'HSCODE', 'NM_EN', 'NM_KO']]
         return new_df
 
+    def search_NM_KO_list(self): # -> js
+        new_df = self.df.drop_duplicates(['NM_KO'])
+        print("nm ko list:",new_df.NM_KO.tolist())
+        return jsonify(nm_ko_list=new_df.NM_KO.tolist())
+
+
     # df 사본으로 복사하여 사용하기
     def search_name_hscode(self,name): # ->js
         df_v = self.df.copy()
@@ -40,7 +46,7 @@ class Search:
 
         # 1순위: 전체 문자열 검색 뽑힌 것
         # 2순위: 한 단어에 대한 갯수에 일치 합으로 기준을 정함
-        priority = 'black box'
+        priority = name
         priority_df = df_v.loc[df_v['NM_EN'].str.contains(priority, na=False)]
 
         # 단어들을 토큰화

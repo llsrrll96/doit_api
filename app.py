@@ -33,14 +33,16 @@ api.add_resource(Find_Controller,'/api/search',
 api.add_resource(History_Controller,'/api/history','/api/history/<string:hsk>',
                  resource_class_kwargs={'history':history}) # 초기 데이터를 파라미터로 보내기 위해 쓴다.
 
+api.add_resource(Item, '/api/item',
+                 resource_class_kwargs={'search':search})
 
-api.add_resource(Item, '/api/item/<string:name>')
+
 api.add_resource(Test,'/api/test/<string:name>',)
 api.add_resource(HelloWorld,'/')
 # api.add_resource(Dummy, '/', '/index')
 
 if __name__=="__main__":
-    # app.run( port="8080") # 로컬 디버깅시, 해당 코드 푸시 금지
+    #app.run( port="8080") # 로컬 디버깅시, 해당 코드 푸시 금지
     app.run() # 깃허브 마스터로 푸시 할때 사용
     # host 등을 직접 지정하고 싶다면
   # app.run(host="127.0.0.1", port="5000", debug=True)
