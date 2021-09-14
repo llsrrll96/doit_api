@@ -45,7 +45,6 @@ api.add_resource(Words_Controller, '/api/words')
 api.add_resource(Item, '/api/item',
                  resource_class_kwargs={'search':search_data})
 
-
 api.add_resource(Test,'/api/test/<string:name>',)
 api.add_resource(HelloWorld,'/')
 # api.add_resource(Dummy, '/', '/index')
