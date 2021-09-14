@@ -6,8 +6,9 @@ class History_Controller(Resource):
     self.history = kwargs['history']
 
   def get(self, hsk): # hsk = 9033000000'
-    print('history controller get:',self.history.search_history(hsk))
-    return self.history.search_history(hsk)
+    js=self.history.search_history(hsk)
+    print('history controller get:',js)
+    return js
 
   def post(self):
     return []

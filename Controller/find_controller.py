@@ -13,9 +13,10 @@ class Find_Controller(Resource):
         print('검색어 : ',names) # 봉인 공기
 
         # 문자열을 이용하여 찾는 메소드
-        return self.search.search_name_hscode(names)
+        js= self.search.search_name_hscode(names)
+        print('데이터 찾기 완료',js)
+        return js
 
     def get(self):
-
 
         return []

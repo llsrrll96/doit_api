@@ -13,12 +13,41 @@ class DB:
 
     def get_category_data(self):
         print('category 파일 불러오는 중')
-        df = pd.read_csv('Repository/hsk_category.csv',encoding='utf-8-sig')
-        df['HS CODE 10'] = df['HS CODE 10'].astype('str')
+        df = pd.read_csv('Repository/category_all.csv',encoding='utf-8-sig')
+        df['hscode10'] = df['hscode10'].astype('str')
+        df['hs6'] = df['hs6'].astype('str')
+
         return df
 
     def get_hscode_en_ko(self):
-        df= pd.read_csv('Repository/all_Combine.csv',encoding='utf-8-sig')
+        print('검색용영어품목명 파일 불러오는 중')
+        # df= pd.read_csv('Repository/all_Combine.csv',encoding='utf-8-sig')
+        df= pd.read_csv('Repository/검색용영어품목명_v2.csv',encoding='utf-8-sig')
         df['HSCODE'] = df['HSCODE'].astype('str')
         df['HS6'] = df['HS6'].astype('str')
         return df
+
+
+    def get_tariffEU_data(self):
+        print('관세율 파일 불러오는 중')
+        df_eu = pd.read_csv('Repository/tariff_hs_EU.csv', encoding='utf-8-sig')
+        df_eu['hscode'] = df_eu['hscode'].astype('str')
+        df_eu.fillna('-', inplace=True)
+
+        return df_eu
+
+    def get_tariffUSA_data(self):
+        print('관세율 파일 불러오는 중')
+        df_usa = pd.read_csv('Repository/tariff_hs_US.csv', encoding='utf-8-sig')
+        df_usa['hscode'] = df_usa['hscode'].astype('str')
+        df_usa.fillna('-', inplace=True)
+
+        return df_usa
+
+    def get_tariffCN_data(self):
+        print('관세율 파일 불러오는 중')
+        df_cn = pd.read_csv('Repository/tariff_hs_CN.csv', encoding='utf-8-sig')
+        df_cn['hscode'] = df_cn['hscode'].astype('str')
+        df_cn.fillna('-', inplace=True)
+
+        return df_cn
