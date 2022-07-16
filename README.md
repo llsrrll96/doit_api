@@ -1,5 +1,5 @@
 # doit_api
-- 빅리더 AI 아카데미 프로젝트 AI을 활용한 HS코드 추천 서비스 / flask API 서버 구현
+- 빅리더 AI 아카데미 프로젝트 HS 품목 분류 결정 및 추천 서비스 / flask API 서버 구현
 
 ![image](https://user-images.githubusercontent.com/58140426/134754954-e8600f98-cc78-47f5-824e-464d16b07736.png)
 
